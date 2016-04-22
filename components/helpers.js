@@ -1,5 +1,3 @@
-var fs = require('fs');
-
 module.exports = {
     isUpperCase: function (string) {
         return string === string.toUpperCase();
@@ -31,12 +29,75 @@ module.exports = {
         return string.replace(/\s+/g, '');
     },
 
+    mapSportAndSeries: function (pngFolders, sourceRoot) {
+        var path = require('path');
+        var logoPaths = {};
+        var _ = require('lodash');
+
+        pngFolders.forEach(function (folder) {
+            var pathList = path.relative(sourceRoot, folder).split(path.sep);
+            var sport = pathList[0];
+            var folderLevel = pathList.length - 1;
+            var series = folderLevel === 1 ? sport : pathList[1];
+
+            if (!logoPaths[sport]) {
+                logoPaths[sport] = {};
+            }
+
+            logoPaths[sport][series] = folder;
+
+            var hasLogosFolder = pathList.indexOf('Logos') !== -1 && _.get(logoPaths[sport], series, false);
+
+            if (hasLogosFolder) {
+                logoPaths[sport][series] = folder;
+            }
+        });
+
+        return logoPaths;
+    },
+
     folderExists: function (folderPath) {
+        var fs = require('fs');
+
         return fs.existsSync(folderPath);
     },
 
     fileExists: function (filePath) {
+        var fs = require('fs');
+
         return fs.existsSync(filePath);
+    },
+
+    updateTeamLogos: function (sport, series, type, sourcePath, targetPath) {
+        var self = this;
+        var grunt = require('grunt');
+        var path = require('path');
+        var sourcePathExists = self.folderExists(sourcePath) || self.folderExists(sourcePath + '_PNG');
+
+        grunt.log.writeln('For ' + sport + ' - ' + series);
+        if (sourcePathExists && self.folderExists(targetPath)) {
+            grunt.log.writeln(targetPath + ' folder exists.');
+            var sourceLogos = grunt.file.expand(sourcePath + '?(_PNG)/+([0-9]).png');
+
+            sourceLogos.forEach(function (sourcePng) {
+                var png = path.parse(sourcePng);
+                var pngName = 'logo-' + png.base;
+
+                self.copyImage(sourcePng, targetPath, pngName, {
+                    type  : type,
+                    sport : sport,
+                    series: series
+                });
+            });
+        } else {
+            if (!sourcePathExists) {
+                grunt.log.writeln(sourcePath + '(_PNG) folder does NOT exist.');
+            }
+
+            if (!self.folderExists(targetPath)) {
+                grunt.log.writeln(targetPath + ' folder does NOT exist.');
+            }
+        }
     },
 
     copyImage: function(sourcePng, targetPngPath, targetPngName, data) {
