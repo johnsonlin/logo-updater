@@ -1,0 +1,23 @@
+{
+  "name": "logo-updater",
+  "version": "0.0.1",
+  "description": "Update team logos",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnsonlin/logo-updater.git"
+  },
+  "author": "Johnson Lin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnsonlin/logo-updater/issues"
+  },
+  "homepage": "https://github.com/johnsonlin/logo-updater#readme",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "lodash": "^4.11.1"
+  }
+}
