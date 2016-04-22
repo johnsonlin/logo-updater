@@ -1,33 +1,31 @@
-# switch-import
+# logo-updater
 
-### change your batch import into multiple line imports from .js files
+### batch updates team logos
 
-run
+install
 ```
-$ npm install switch-import
-$ node node_modules/switch-import/main
+$ npm install logo-updater
 ```
-will change your:
+
+update team-logos
 ```
-import {get, result, set, kababCase} from 'lodash';
+$ node node_modules/logo-updater/team-logos
 ```
-to
+
+update stats-widget
 ```
-import get from 'lodash/get';
-import kababCase from 'lodash/kababCase';
-import result from 'lodash/result';
-import set from 'lodash/set';
+$ node node_modules/logo-updater/stats-widget
 ```
+
 
 ### Options
-* `-src` - target directory (_default: 'src'_) | usage: `node node_modules/switch-import/main -src temp_dir`
-* `-from` - module name (_default: 'lodash'_) | usage: `node node_modules/switch-import/main -from jquery`
+* `-source` - source directory (_default: 'logos'_) | usage: `node node_modules/switch-import/main -source /home/source/folder/to/team/logos`
 
 ### usage
-`$ node node_modules/switch-import/main`
+#### If you copy source logo files to `logos` folder under project root
+`$ node node_modules/switch-import/team-logos`
 
-`$ node node_modules/switch-import/main -src temp_dir`
+#### If you want to use remote path for source logos
+`$ node node_modules/switch-import/team-logos -source /home/source/folder/to/team/logos`
 
-`$ node node_modules/switch-import/main -from jquery`
-
-`$ node node_modules/switch-import/main -src temp_dir -from jquery`
+`$ node node_modules/switch-import/stats-widget -source X:\source\folder\to\team\logos`
